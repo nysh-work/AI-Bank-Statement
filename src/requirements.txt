@@ -59,6 +59,8 @@ crewai-tools
 
 
 
+
+
 #LLM imferemce optmization
 vllm
 optimum
@@ -68,3 +70,4 @@ fastembed-gpu # for fast embedding gpu
 
 # litellm
 litellm
+opik==1.7.13
