@@ -1,11 +1,18 @@
-# AI-Bank Statement document automatic by LLM and Personal financial analysis
+# AI-Bank Statement Analysis Tool for Auditors
 
+### Introduction
+#### Business/ Use Case
+Auditors frequently receive numerous bank statements in PDF format for financial audits, compliance reviews, and fraud detection. This tool is designed to assist auditors in analyzing bank statements efficiently by automating the extraction, verification, and analysis of financial transaction data.
 
-### Introdctions
-#### Business/ Use case 
-Every Month, we obtain a lot bank statement in pdf format document. We intend to calculate and summarize the personal expensive and income from bank statement, statistically analysis monthly and yearly income vs expense for personal finanial planing . It is taking time to handle and store data.
+This project uses LLM (Large Language Model) technology with RAG (Retrieval Augmented Generation) techniques to help auditors:
+- Extract and verify transaction records from bank statements
+- Detect anomalies and potential fraud indicators
+- Perform compliance checks against regulatory requirements
+- Generate comprehensive audit reports and findings
+- Compare transactions across multiple periods
+- Identify unusual patterns or discrepancies
 
-This project intended to be used LLM Model for the purpose of assisting the user obtain fully record from bank statement by RAG technique. Convert the bank statement from unstructured document format into structured format. Store the records into database. Use LLM nature language to query the bank statement and give us the report. 
+The tool converts unstructured bank statement PDFs into structured data, stores records in a vector database for efficient retrieval, and enables natural language queries for audit investigations. 
 
 
 This project mainly can divide into three main parts: 
@@ -54,20 +61,36 @@ This project mainly can divide into three main parts:
 - use truLens or W&B framework for evaluation and debug LLM performance
 - LLM evaluation : Content relevance, Answer Relevance, accuary, recall, precision 
 
-5. AI agent
-- use AI agent automatically trigger multiple function 
+5. AI Agent
+- Automated audit workflow with multiple specialized agents:
+  - Document extraction agent for PDF processing
+  - Compliance verification agent for regulatory checks
+  - Anomaly detection agent for fraud indicators
+  - Financial analysis agent for transaction verification
+  - Report generation agent for audit documentation
 
-6. VectorDB 
-- use Vector DataBase to store the converted Document context into embedding vector
-- use Vector Database can find document similarity 
+6. VectorDB
+- Store bank statement data in vector database for efficient retrieval
+- Enable semantic search for audit queries
+- Find similar transactions and patterns across multiple statements
 
 7. SQL Database
-- use to store the conference record
-- use for query history conference record
+- Store structured transaction records for audit trail
+- Query historical transaction data
+- Generate comparative reports across audit periods
 
-8. FrontEnd UI
-- first version will be used Streamlit for Frontend UI
-- later versions will be Full stack with Backend Restful API
+8. Frontend UI
+- First version uses Streamlit for auditor-friendly interface
+- Later versions will include full stack with Backend RESTful API
+- Features: batch statement upload, audit checklist, anomaly highlighting
+
+### Key Auditing Features
+- **Transaction Verification**: Cross-reference and verify all transactions
+- **Anomaly Detection**: Identify unusual patterns, duplicate payments, or suspicious activities
+- **Compliance Checks**: Verify adherence to regulatory requirements and internal controls
+- **Reconciliation**: Compare statements across periods for discrepancies
+- **Audit Trail**: Maintain complete record of analysis and findings
+- **Natural Language Queries**: Ask questions like "Show all transactions over $10,000" or "Find duplicate payments"
 
 
 

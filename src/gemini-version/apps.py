@@ -1,14 +1,17 @@
 '''
-Chat With Multiple PDF Documents With Langchain And Google Gemini Pro #genai #googlegemini
+AI-Powered Bank Statement Auditor Tool
+Audit bank statements using AI with Langchain and Google Gemini Pro
 
+Features:
+- Extract transaction data from bank statement PDFs
+- Analyze transactions for anomalies and fraud indicators
+- Answer natural language audit queries
+- Generate audit findings and reports
 
-Require VPN for Hong kong runing the Generative AI
-
-go to makesuite generte  API key
-https://makersuite.google.com/
-
-
-set your google API key to environment variable 
+Setup:
+1. Obtain Google API key from https://makersuite.google.com/
+2. Set GOOGLE_API_KEY in .env file
+3. Note: VPN may be required in some regions
 
 '''
 
@@ -99,20 +102,29 @@ def getVectorStore(text_chunks ,model="models/embedding-001"):
 def getConversationalChain(temperature=0.3, modelName="gemini-pro"):
     #promptTemplate
     promptTemplate = """
-    Answer the question as detailed as possible from the provided context, make sure to provide all the details, if the answer is not in
-    provided context just say, "answer is not available in the context", don't provide the wrong answer\n\n
-    Context:\n {context}?\n
-    Question: \n{question}\n
+    You are an experienced financial auditor analyzing bank statements. Answer the audit question based on the provided bank statement data.
 
-    Answer:
+    Provide detailed, accurate responses including:
+    - Specific transaction details (dates, amounts, parties, descriptions)
+    - Any anomalies or unusual patterns detected
+    - Relevant compliance observations
+    - Supporting evidence from the statements
+
+    If the answer is not available in the provided context, clearly state "The requested information is not available in the provided bank statements."
+    Do not make assumptions or provide information not supported by the documents.
+
+    Context (Bank Statement Data):\n {context}\n
+    Audit Question: \n{question}\n
+
+    Audit Response:
     """
 
-    model=ChatGoogleGenerativeAI(model=modelName, 
+    model=ChatGoogleGenerativeAI(model=modelName,
                                  temperature=temperature) # use google gemini model for conversational chain
-    
-    prompt = PromptTemplate(template = promptTemplate, 
+
+    prompt = PromptTemplate(template = promptTemplate,
                             input_variables = ["context", "question"]) # use prompt template for conversational chain
-    
+
     chain = load_qa_chain(model, chain_type="stuff", prompt=prompt) # load question answering chart
 
     return chain
@@ -136,10 +148,20 @@ def user_input(user_question, model= "models/embedding-001"):
 
 # main function
 def main():
-    st.set_page_config("Chat with Multiple PDF") # set page config
-    st.header("Chat with Multiple PDF using Gemini💁") #set header 
+    st.set_page_config("Bank Statement Auditor Tool") # set page config
+    st.header("🔍 AI-Powered Bank Statement Audit Analysis Tool") #set header
 
-    user_question = st.text_input("Ask a Question from PDF Files") # get user question
+    st.markdown("""
+    ### Auditor Assistant
+    This tool helps auditors analyze bank statements efficiently by:
+    - Extracting and verifying transaction data
+    - Detecting anomalies and unusual patterns
+    - Identifying potential fraud indicators
+    - Checking compliance with regulations
+    - Generating comprehensive audit reports
+    """)
+
+    user_question = st.text_input("Ask an audit question (e.g., 'Show all transactions over $10,000', 'Are there any duplicate payments?', 'Identify unusual transactions')") # get user question
 
     if user_question:
         user_input(user_question) # get user input
@@ -147,16 +169,30 @@ def main():
 
     # sidebar
     with st.sidebar:
-        st.title("Menu:") # set sidebar title
-        pdfDocs = st.file_uploader("Upload your PDF Files and Click on the Submit & Process Button",
-                                    accept_multiple_files=True) # upload pdf files
+        st.title("📁 Upload Bank Statements") # set sidebar title
+        st.markdown("Upload bank statement PDF files for audit analysis")
+        pdfDocs = st.file_uploader("Upload Bank Statement PDF Files",
+                                    accept_multiple_files=True,
+                                    help="Upload one or more bank statement PDF files for comprehensive analysis") # upload pdf files
         # submit and process button
-        if st.button("Submit & Process"):
-            with st.spinner("Processing..."): 
+        if st.button("🔄 Process Statements"):
+            with st.spinner("Extracting and analyzing bank statements..."):
                 raw_text = getPDFText(pdfDocs) #
                 text_chunks = getTextChunks(raw_text)
                 getVectorStore(text_chunks)
-                st.success("Done")
+                st.success("✅ Bank statements processed successfully! You can now ask audit questions.")
+
+        st.markdown("---")
+        st.markdown("### 📋 Sample Audit Queries")
+        st.markdown("""
+        - What is the total transaction amount?
+        - Show all transactions over $5,000
+        - Are there any duplicate payments?
+        - Identify unusual or suspicious transactions
+        - What is the account balance trend?
+        - List all cash withdrawals
+        - Find transactions with specific vendors
+        """)
 
 
 if __name__ == "__main__":
